@@ -51,8 +51,7 @@ proxy('world');
 var revoke = capabilities.revoke;
 var ackCustomer = sponsor(function ackCustomerBeh() {
     console.log('revoke acked');
+    proxy('this');
+    proxy('does not get through');
 });
 revoke(ackCustomer);
-
-proxy('this');
-proxy('does not get through');
