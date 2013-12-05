@@ -35,24 +35,24 @@ var revocable = require('../index.js'),
 
 var sponsor = tart.sponsor();
 
-var actorBeh = function (message) {
+var actorBeh = function actorBeh(message) {
     console.log(message);
 };
 
 var actor = sponsor(actorBeh);
 
-var capabilities = revocable.createReference(sponsor, actor);
+var capabilities = revocable.proxy(sponsor, actor);
 
-var ref = capabilities.reference;
-ref('hello');
-ref('revocable');
-ref('world');
+var proxy = capabilities.proxy;
+proxy('hello');
+proxy('revocable');
+proxy('world');
 
 var revoke = capabilities.revoke;
-var revokeAckActor = sponsor(function () {
+var ackCustomer = sponsor(function ackCustomerBhe() {
     console.log('revoke acked');
 });
-revoke(revokeAckActor);
+revoke(ackCustomer);
 
-ref('this');
-ref('does not get through');
+proxy('this');
+proxy('does not get through');

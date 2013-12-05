@@ -31,27 +31,27 @@ var revocable = require('tart-revocable'),
 
 var sponsor = tart.sponsor();
 
-var actorBeh = function (message) {
+var actorBeh = function actorBeh(message) {
     console.log(message);
 };
 
 var actor = sponsor(actorBeh);
 
-var capabilities = revocable.createReference(sponsor, actor);
+var capabilities = revocable.proxy(sponsor, actor);
 
-var ref = capabilities.reference;
-ref('hello');
-ref('revocable');
-ref('world');
+var proxy = capabilities.proxy;
+proxy('hello');
+proxy('revocable');
+proxy('world');
 
 var revoke = capabilities.revoke;
-var revokeAckActor = sponsor(function () {
+var ackCustomer = sponsor(function ackCustomerBhe() {
     console.log('revoke acked');
 });
-revoke(revokeAckActor);
+revoke(ackCustomer);
 
-ref('this');
-ref('does not get through');
+proxy('this');
+proxy('does not get through');
 ```
 
 ## Tests
@@ -62,15 +62,15 @@ ref('does not get through');
 
 **Public API**
 
-  * [revocable.createReference(sponsor, actor)](#revocablecreatereferencesponsor-actor)
+  * [revocable.proxy(sponsor, actor)](#revocableproxysponsor-actor)
 
-### revocable.createReference(sponsor, actor)
+### revocable.proxy(sponsor, actor)
 
   * `sponsor`: _Sponsor_ `function (behavior) {}` Sponsor for actor creation.
-  * `actor`: _Actor_ `function (message) {}` Actor to create a revocable reference for.
-  * Return: _Object_ An object containing a revocable reference and a revoke capability for that reference.
-    * `reference`: _Actor_ `function (message) {}` Actor that will forward all messages to the `actor` it is a reference for.
-    * `revoke`: _Actor_ `function (customer) {}` Actor that upon receipt of the message will revoke the `reference`.
+  * `actor`: _Actor_ `function (message) {}` Actor to create a revocable proxy for.
+  * Return: _Object_ An object containing a revocable proxy and a revoke capability for that proxy.
+    * `proxy`: _Actor_ `function (message) {}` Actor that will forward all messages to the `actor` it is a proxy for.
+    * `revoke`: _Actor_ `function (customer) {}` Actor that upon receipt of the message will revoke the `proxy`.
       * `customer`: _Actor_ `function () {}` An ack will be sent to the `customer` upon revocation.
 
 ## Sources

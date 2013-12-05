@@ -35,26 +35,34 @@ var revocable = require('../index.js'),
 
 var test = module.exports = {};   
 
-test['createReference should return a revocable reference and a revoke capability'] = function (test) {
+test['proxy() should return a revocable proxy and a revoke capability'] = function (test) {
     test.expect(2);
     var sponsor = tart.sponsor();
-    var failBeh = function (message) {
+
+    var secret, capabilities;
+
+    var failBeh = function failBeh(message) {
         test.equal(true, "should not receive message");
     }
 
-    var actor = sponsor(function (message) { 
+    var testDoneBeh = function () {
+        test.done();
+    };
+
+    secret = sponsor(function secretBeh(message) {
         test.equal(message, 'hello');
         this.behavior = failBeh; // should not receive any more messages
+        var ackCustomer = this.sponsor(ackCustomerBeh);
+        capabilities.revoke(ackCustomer);
     });
 
-    var capabilities = revocable.createReference(sponsor, actor);
-    capabilities.reference('hello');
-    capabilities.revoke(sponsor(function () {
+    var ackCustomerBeh = function ackCustomerBeh(message) {
         test.ok(true); // revoke was acked
-        capabilities.reference('hello again');
-        var finish = this.sponsor(function () {
-            test.done();
-        });
-        finish();
-    }));
+        capabilities.proxy('hello again'); // should never reach `secret`
+        var finish = this.sponsor(testDoneBeh);
+        finish(); // send empty message to finish
+    };
+
+    capabilities = revocable.proxy(sponsor, secret);
+    capabilities.proxy('hello');
 };

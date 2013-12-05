@@ -32,19 +32,19 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 var revocable = module.exports;
 
-revocable.createReference = function createReference(sponsor, actor) {
+revocable.proxy = function proxy(sponsor, actor) {
 
-    var referenceBehavior = function referenceBehavior(message) {
+    var proxyBeh = function proxyBeh(message) {
         actor(message);
     };
 
-    var revokeBehavior = function revokeBehavior(customer) {
-        actor = function () {}; // ignore all messages
+    var revokeBeh = function revokeBeh(customer) {
+        actor = function () {}; // turn actor into no-op
         customer(); // ack
     };
 
     return { 
-        reference: sponsor(referenceBehavior), 
-        revoke: sponsor(revokeBehavior) 
+        proxy: sponsor(proxyBeh), 
+        revoke: sponsor(revokeBeh) 
     };
 };
