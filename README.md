@@ -4,7 +4,7 @@ _Stability: 1 - [Experimental](https://github.com/tristanls/stability-index#stab
 
 [![NPM version](https://badge.fury.io/js/tart-revocable.png)](http://npmjs.org/package/tart-revocable)
 
-Implementation of a revocable reference for [Tiny Actor Run-Time in JavaScript](https://github.com/organix/tartjs).
+Implementation of a revocable proxy for [Tiny Actor Run-Time in JavaScript](https://github.com/organix/tartjs).
 
 ## Contributors
 
@@ -12,7 +12,7 @@ Implementation of a revocable reference for [Tiny Actor Run-Time in JavaScript](
 
 ## Overview
 
-An implementation of a revocable reference.
+An implementation of a revocable proxy.
 
   * [Usage](#usage)
   * [Tests](#tests)
@@ -45,7 +45,7 @@ proxy('revocable');
 proxy('world');
 
 var revoke = capabilities.revoke;
-var ackCustomer = sponsor(function ackCustomerBhe() {
+var ackCustomer = sponsor(function ackCustomerBeh() {
     console.log('revoke acked');
 });
 revoke(ackCustomer);
@@ -70,7 +70,7 @@ proxy('does not get through');
   * `actor`: _Actor_ `function (message) {}` Actor to create a revocable proxy for.
   * Return: _Object_ An object containing a revocable proxy and a revoke capability for that proxy.
     * `proxy`: _Actor_ `function (message) {}` Actor that will forward all messages to the `actor` it is a proxy for.
-    * `revoke`: _Actor_ `function (customer) {}` Actor that upon receipt of the message will revoke the `proxy`.
+    * `revoke`: _Actor_ `function (customer) {}` Actor that upon receipt of a message will revoke the `proxy`.
       * `customer`: _Actor_ `function () {}` An ack will be sent to the `customer` upon revocation.
 
 ## Sources

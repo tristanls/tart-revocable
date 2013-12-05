@@ -49,7 +49,7 @@ proxy('revocable');
 proxy('world');
 
 var revoke = capabilities.revoke;
-var ackCustomer = sponsor(function ackCustomerBhe() {
+var ackCustomer = sponsor(function ackCustomerBeh() {
     console.log('revoke acked');
 });
 revoke(ackCustomer);
