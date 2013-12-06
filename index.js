@@ -39,7 +39,7 @@ revocable.proxy = function proxy(sponsor, actor) {
     };
 
     var revokeBeh = function revokeBeh(customer) {
-        actor = function () {}; // turn actor into no-op
+        actor = null; // crash proxy
         customer(); // ack
     };
 
