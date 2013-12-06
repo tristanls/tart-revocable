@@ -11,7 +11,7 @@
     "nodeunit": "0.8.1"
   },
   "dependencies": {
-    "tart": "0.1.2"
+    "tart": "0.1.3"
   },
   "repository": {
     "type": "git",
