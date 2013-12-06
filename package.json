@@ -1,6 +1,6 @@
 {
   "name": "tart-revocable",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tart implementation of a revocable reference",
   "scripts": {
     "readme": "node examples/readme.js",
