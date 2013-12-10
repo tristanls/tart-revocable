@@ -3,6 +3,7 @@
   "version": "0.1.3",
   "description": "Tart implementation of a revocable reference",
   "scripts": {
+    "inject-examples": "node scripts/injectExamples.js",
     "readme": "node examples/readme.js",
     "test": "node scripts/test.js"
   },
@@ -11,7 +12,7 @@
     "nodeunit": "0.8.1"
   },
   "dependencies": {
-    "tart": "0.1.3"
+    "tart": "0.1.4"
   },
   "repository": {
     "type": "git",

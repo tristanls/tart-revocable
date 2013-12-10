@@ -33,7 +33,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 var revocable = require('../index.js'),
     tart = require('tart');
 
-var sponsor = tart.sponsor();
+var sponsor = tart.minimal();
 
 var actorBeh = function actorBeh(message) {
     console.log(message);

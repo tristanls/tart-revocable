@@ -26,10 +26,12 @@ To run the below example run:
     npm run readme
 
 ```javascript
-var revocable = require('tart-revocable'),
+"use strict";
+
+var revocable = require('../index.js'),
     tart = require('tart');
 
-var sponsor = tart.sponsor();
+var sponsor = tart.minimal();
 
 var actorBeh = function actorBeh(message) {
     console.log(message);
