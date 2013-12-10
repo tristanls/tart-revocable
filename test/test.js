@@ -37,7 +37,7 @@ var test = module.exports = {};
 
 test['proxy() should return a revocable proxy and a revoke capability'] = function (test) {
     test.expect(2);
-    var sponsor = tart.sponsor();
+    var sponsor = tart.minimal();
 
     var secret, capabilities;
 
