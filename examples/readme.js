@@ -41,14 +41,14 @@ var actorBeh = function actorBeh(message) {
 
 var actor = sponsor(actorBeh);
 
-var capabilities = revocable.proxy(sponsor, actor);
+var capabilities = revocable.proxy(actor);
 
-var proxy = capabilities.proxy;
+var proxy = sponsor(capabilities.proxyBeh);
 proxy('hello');
 proxy('revocable');
 proxy('world');
 
-var revoke = capabilities.revoke;
+var revoke = sponsor(capabilities.revokeBeh);
 var ackCustomer = sponsor(function ackCustomerBeh() {
     console.log('revoke acked');
     proxy('this');
