@@ -1,6 +1,6 @@
 {
   "name": "tart-revocable",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Tart implementation of a revocable reference",
   "scripts": {
     "inject-examples": "node scripts/injectExamples.js",
