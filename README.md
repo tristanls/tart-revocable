@@ -91,10 +91,10 @@ stepper();
 
 ### revocable.proxy(actor)
 
-  * `actor`: _Actor_ `function (message) {}` Actor to create a revocable proxy for.
+  * `actor`: _Actor_ `function (message) {}` Actor to create a revocable proxies for.
   * Return: _Object_ An object containing behaviors for revocable proxies and a revoke capabilities for the proxies.
     * `proxyBeh`: _Actor_ `function (message) {}` Actor behavior that will forward all messages to the `actor` it is a proxy for.
-    * `revokeBeh`: _Actor_ `function (customer) {}` Actor behavior that upon receipt of a message will revoke all proxies.
+    * `revokeBeh`: _Actor_ `function (customer) {}` Actor behavior that upon receipt of a message will revoke all proxies for the `actor`.
       * `customer`: _Actor_ `function () {}` An ack will be sent to the `customer` upon revocation.
 
 ## Sources
