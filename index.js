@@ -32,10 +32,10 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 var revocable = module.exports;
 
-revocable.proxy = function proxy(sponsor, actor) {
+revocable.proxy = function proxy(actor) {
 
     var proxyBeh = function proxyBeh(message) {
-        actor(message);
+        actor(message); // transparent forward, if not null
     };
 
     var revokeBeh = function revokeBeh(customer) {
@@ -44,7 +44,7 @@ revocable.proxy = function proxy(sponsor, actor) {
     };
 
     return { 
-        proxy: sponsor(proxyBeh), 
-        revoke: sponsor(revokeBeh) 
+        proxyBeh: proxyBeh, 
+        revokeBeh: revokeBeh 
     };
 };
