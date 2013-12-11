@@ -41,40 +41,17 @@ var actorBeh = function actorBeh(message) {
 
 var actor = sponsor(actorBeh);
 
-var capabilities = revocable.proxy(actor);
+var capabilities = revocable.proxy(sponsor, actor);
 
 var proxy = sponsor(capabilities.proxyBeh);
-var revoke = sponsor(capabilities.revokeBeh);
+proxy('hello');
+proxy('revocable');
+proxy('world');
 
+var revoke = sponsor(capabilities.revokeBeh);
 var ackCustomer = sponsor(function ackCustomerBeh() {
     console.log('revoke acked');
-    stepper();
+    proxy('this');
+    proxy('does not get through');
 });
-
-var steps = [
-    function step_0 () {
-        console.log('step 0');
-        proxy('hello');
-        proxy('revocable');
-        proxy('world');
-        this.behavior = steps[1];
-        stepper();  //this.self();
-    },
-    function step_1 () {
-        console.log('step 1');
-        revoke(ackCustomer);
-        this.behavior = steps[2];
-    },
-    function step_2 () {
-        console.log('step 2');
-        proxy('these do not');
-        proxy('get through');
-        this.behavior = steps[3];
-    },
-    function step_3 () {
-        console.log('step 3!');
-        throw new Error('Should not reach step 3');
-    }
-];
-var stepper = sponsor(steps[0]);
-stepper();
+revoke(ackCustomer);
