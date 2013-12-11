@@ -41,7 +41,7 @@ var actorBeh = function actorBeh(message) {
 
 var actor = sponsor(actorBeh);
 
-var capabilities = revocable.proxy(sponsor, actor);
+var capabilities = revocable.proxy(actor);
 
 var proxy = sponsor(capabilities.proxyBeh);
 proxy('hello');
