@@ -39,7 +39,7 @@ test['proxy() should return a revocable proxy and a revoke capability'] = functi
     test.expect(2);
     var sponsor = tart.minimal();
 
-    var secret, capabilities;
+    var secret, capabilities, proxy, revoke;
 
     var failBeh = function failBeh(message) {
         test.equal(true, "should not receive message");
@@ -53,16 +53,19 @@ test['proxy() should return a revocable proxy and a revoke capability'] = functi
         test.equal(message, 'hello');
         this.behavior = failBeh; // should not receive any more messages
         var ackCustomer = this.sponsor(ackCustomerBeh);
-        capabilities.revoke(ackCustomer);
+        revoke(ackCustomer);
     });
 
     var ackCustomerBeh = function ackCustomerBeh(message) {
         test.ok(true); // revoke was acked
-        capabilities.proxy('hello again'); // should never reach `secret`
+        proxy('hello again'); // should never reach `secret`
         var finish = this.sponsor(testDoneBeh);
         finish(); // send empty message to finish
     };
 
-    capabilities = revocable.proxy(sponsor, secret);
-    capabilities.proxy('hello');
+    capabilities = revocable.proxy(secret);
+    proxy = sponsor(capabilities.proxyBeh);
+    revoke = sponsor(capabilities.revokeBeh);
+
+    proxy('hello');
 };
