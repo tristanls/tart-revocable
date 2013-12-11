@@ -87,15 +87,14 @@ stepper();
 
 **Public API**
 
-  * [revocable.proxy(sponsor, actor)](#revocableproxysponsor-actor)
+  * [revocable.proxy(actor)](#revocableproxyactor)
 
-### revocable.proxy(sponsor, actor)
+### revocable.proxy(actor)
 
-  * `sponsor`: _Sponsor_ `function (behavior) {}` Sponsor for actor creation.
   * `actor`: _Actor_ `function (message) {}` Actor to create a revocable proxy for.
-  * Return: _Object_ An object containing a revocable proxy and a revoke capability for that proxy.
-    * `proxy`: _Actor_ `function (message) {}` Actor that will forward all messages to the `actor` it is a proxy for.
-    * `revoke`: _Actor_ `function (customer) {}` Actor that upon receipt of a message will revoke the `proxy`.
+  * Return: _Object_ An object containing behaviors for revocable proxies and a revoke capabilities for the proxies.
+    * `proxyBeh`: _Actor_ `function (message) {}` Actor behavior that will forward all messages to the `actor` it is a proxy for.
+    * `revokeBeh`: _Actor_ `function (customer) {}` Actor behavior that upon receipt of a message will revoke all proxies.
       * `customer`: _Actor_ `function () {}` An ack will be sent to the `customer` upon revocation.
 
 ## Sources
