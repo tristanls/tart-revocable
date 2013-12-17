@@ -31,23 +31,20 @@ OTHER DEALINGS IN THE SOFTWARE.
 "use strict";
 
 var revocable = require('../index.js'),
-    tart = require('tart');
+    tart = require('tart-tracing');
 
 var test = module.exports = {};   
 
 test['proxy() should return a revocable proxy and a revoke capability'] = function (test) {
-    test.expect(2);
-    var sponsor = tart.minimal();
+    test.expect(3);
+    var tracing = tart.tracing();
+    var sponsor = tracing.sponsor;
 
     var secret, capabilities, proxy, revoke;
 
     var failBeh = function failBeh(message) {
         test.equal(true, "should not receive message");
     }
-
-    var testDoneBeh = function () {
-        test.done();
-    };
 
     secret = sponsor(function secretBeh(message) {
         test.equal(message, 'hello');
@@ -59,8 +56,6 @@ test['proxy() should return a revocable proxy and a revoke capability'] = functi
     var ackCustomerBeh = function ackCustomerBeh(message) {
         test.ok(true); // revoke was acked
         proxy('hello again'); // should never reach `secret`
-        var finish = this.sponsor(testDoneBeh);
-        finish(); // send empty message to finish
     };
 
     capabilities = revocable.proxy(secret);
@@ -68,4 +63,43 @@ test['proxy() should return a revocable proxy and a revoke capability'] = functi
     revoke = sponsor(capabilities.revokeBeh);
 
     proxy('hello');
+
+    var ignore = function () {};
+
+    test.ok(tracing.eventLoop({fail: ignore}));
+    test.done();
+};
+
+test['proxy() should throw an exception if receiving message after being revoked'] = function (test) {
+    test.expect(4);
+    var tracing = tart.tracing();
+    var sponsor = tracing.sponsor;
+
+    var secret, capabilities, proxy, revoke;
+
+    secret = sponsor(function secretBeh(message) {
+        test.equal(false, 'should not be called');
+    });
+
+    var ackCustomerBeh = function ackCustomerBeh(message) {
+        test.ok(true); // revoke was acked
+    };
+
+    capabilities = revocable.proxy(secret);
+    proxy = sponsor(capabilities.proxyBeh);
+    revoke = sponsor(capabilities.revokeBeh);
+
+    var ackCustomer = sponsor(ackCustomerBeh);
+    revoke(ackCustomer);
+
+    // drain all the events to ensure revoke took place
+    test.ok(tracing.eventLoop());
+
+    proxy('hello');
+
+    test.ok(tracing.eventLoop({fail: function (exception) {
+        test.ok(exception);
+    }}));
+
+    test.done();
 };
