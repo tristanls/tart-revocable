@@ -9,11 +9,9 @@
   },
   "main": "index.js",
   "devDependencies": {
-    "nodeunit": "0.8.2",
-    "tart-tracing": "0.1.5"
-  },
-  "dependencies": {
-    "tart": "0.1.5"
+    "nodeunit": "0.8.4",
+    "tart": "0.2.x",
+    "tart-tracing": "0.2.1"
   },
   "repository": {
     "type": "git",
